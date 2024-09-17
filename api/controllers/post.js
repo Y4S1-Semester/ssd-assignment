@@ -1,5 +1,8 @@
 import { db } from "../db.js";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Retrieves posts from a database
 export const getPosts = (req, res) => {
@@ -46,7 +49,7 @@ export const addPost = (req, res) => {
   if (!token) return res.status(401).json("Not authenticated!");
 
   // Verify the token using the secret key
-  jwt.verify(token, "jwtkey", (err, userInfo) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
     // If there's an error, the token is not valid
     if (err) return res.status(403).json("Token is not valid!");
 
@@ -83,7 +86,7 @@ export const deletePost = (req, res) => {
   if (!token) return res.status(401).json("Not authenticated");
 
   // Verify the token using the secret key
-  jwt.verify(token, "jwtkey", (err, userInfo) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
     // If there's an error, the token is not valid
     if (err) return res.status(403).json("Token is not valid");
 
@@ -114,7 +117,7 @@ export const updatePost = (req, res) => {
   if (!token) return res.status(401).json("Not authenticated!");
 
   // Verify the token using the "jwtkey" secret key. If the token is not valid, return an error response.
-  jwt.verify(token, "jwtkey", (err, userInfo) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
 
     // Get the post ID from the request parameters.
