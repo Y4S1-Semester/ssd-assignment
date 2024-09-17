@@ -6,6 +6,7 @@ import Menu from "../components/Menu";
 import axios from "axios";
 import moment from "moment";
 import { AuthContext } from "../context/authContext";
+import { sanitizeHTML, getTextFromHTML, sanitizeURL } from "../utils/sanitize";
 
 const Single = () => {
   const [post, setPost] = useState({});
@@ -38,7 +39,7 @@ const Single = () => {
     }
   };
 
-  const getText = (html) =>{
+  const getText = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html")
     return doc.body.textContent
   }
@@ -46,11 +47,11 @@ const Single = () => {
   return (
     <div className="single">
       <div className="content">
-        <img src={`../upload/${post?.img}`} alt="" />
+        <img src={sanitizeURL(`../upload/${post?.img}`)} alt={sanitizeHTML(post.title)} />
         <div className="user">
-          {post.userImg && <img src={post.userImg} alt="" />}
+          {post.userImg && <img src={sanitizeURL(post.userImg)} alt={sanitizeHTML(post.username)} />}
           <div className="info">
-            <span>{post.username}</span>
+            <span>{sanitizeHTML(post.username)}</span>
             <p>Posted {moment(post.date).fromNow()}</p>
           </div>
           {currentUser.username === post.username && (
@@ -62,10 +63,10 @@ const Single = () => {
             </div>
           )}
         </div>
-        <h1>{post.title}</h1>
-        {getText(post.desc)}
+        <h1>{sanitizeHTML(post.title)}</h1>
+        <p>{getTextFromHTML(post.desc)}</p>
       </div>
-      <Menu cat={post.cat}/>
+      <Menu cat={post.cat} />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { sanitizeHTML, sanitizeURL } from "../utils/sanitize";
 //import { Link } from "react-router-dom";
 
 // Defining a functional component named Menu which takes a single prop named cat
@@ -54,7 +55,7 @@ const Menu = ({ cat }) => {
       <h1>Other posts you may like 😉</h1>
       {posts.map((post) => (
         <div className="post" key={post.id}>
-          <img src={`../upload/${post?.img}`} alt="" />
+          <img src={sanitizeURL(`../upload/${post.img}`)} alt={sanitizeHTML(post.title)} />
           <h2>{post.title}</h2>
           <button>Read More</button>
         </div>
