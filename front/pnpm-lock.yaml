@@ -41,6 +41,9 @@ dependencies:
   sass:
     specifier: ^1.78.0
     version: 1.78.0
+  sweetalert2:
+    specifier: ^11.14.0
+    version: 11.14.0
 
 packages:
 
@@ -9877,6 +9880,10 @@ packages:
       csso: 4.2.0
       picocolors: 1.1.0
       stable: 0.1.8
+    dev: false
+
+  /sweetalert2@11.14.0:
+    resolution: {integrity: sha512-kF1Q/+GtZZXr+rYVcBNwlEsnxP089CpDbck+MYjvLaQj9x4fzHqN9UhlkHOIR0k09LVu2sx8cU9BnvRlxWIZqg==}
     dev: false
 
   /symbol-tree@3.2.4:

@@ -16,6 +16,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 import "./style.scss"
+import ProtectedRoute from "./utils/protect";
 
 const Layout = () => {
   return (
@@ -43,7 +44,11 @@ const router = createBrowserRouter([
       },
       {
         path:"/write",
-        element:<Write/>
+        element: (
+            <ProtectedRoute>
+              <Write />
+            </ProtectedRoute>
+        ),
       },
     ]    
   },
