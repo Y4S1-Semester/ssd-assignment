@@ -1,7 +1,7 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import Swal from "sweetalert2";
+import {registerUser} from "../service/auth.service";
 
 const Register = () => {
   const [inputs, setInputs] = useState({
@@ -20,45 +20,64 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/auth/register", inputs);
+      // Use the service to make the API call
+      await registerUser(inputs);
+
+      // Show success message using Swal
+      await Swal.fire({
+        icon: "success",
+        title: "Registration Successful",
+        text: "You can now login with your new account.",
+        showConfirmButton: true,
+      });
+
+      // Redirect to login after successful registration
       navigate("/login");
     } catch (err) {
-      setError(err.response.data);
+      // Handle error using Swal
+      await Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: err.response?.data?.message || "An unexpected error occurred.",
+      });
+
+      // Optionally, set the error in the state if needed
+      setError(err.response?.data);
     }
   };
 
   return (
-    <div className="auth">
-      <h1>Register</h1>
-      <form>
-        <input
-          required
-          type="text"
-          placeholder="username"
-          name="username"
-          onChange={handleChange}
-        />
-        <input
-          required
-          type="email"
-          placeholder="email"
-          name="email"
-          onChange={handleChange}
-        />
-        <input
-          required
-          type="password"
-          placeholder="password"
-          name="password"
-          onChange={handleChange}
-        />
-        <button onClick={handleSubmit}>Register</button>
-        {err && <p>{err}</p>}
-        <span>
+      <div className="auth">
+        <h1>Register</h1>
+        <form>
+          <input
+              required
+              type="text"
+              placeholder="username"
+              name="username"
+              onChange={handleChange}
+          />
+          <input
+              required
+              type="email"
+              placeholder="email"
+              name="email"
+              onChange={handleChange}
+          />
+          <input
+              required
+              type="password"
+              placeholder="password"
+              name="password"
+              onChange={handleChange}
+          />
+          <button onClick={handleSubmit}>Register</button>
+          {err && <p>{err}</p>}
+          <span>
           Do you have an account? <Link to="/login">Login</Link>
         </span>
-      </form>
-    </div>
+        </form>
+      </div>
   );
 };
 
