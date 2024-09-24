@@ -34,7 +34,7 @@ export const registerUser = async (username, email, password) => {
 
 export const loginUser = async (username, password) => {
     try {
-        // Find the user by username
+        // Find user by username
         const users = await userRepository.findUserByUsername(username);
         if (users.length === 0) {
             return { success: false, message: "User not found!" };
@@ -42,19 +42,21 @@ export const loginUser = async (username, password) => {
 
         const user = users[0];
 
-        // Check if the password is correct
+        // Compare the provided password with the stored hashed password
         const isPasswordCorrect = bcrypt.compareSync(password, user.password);
         if (!isPasswordCorrect) {
             return { success: false, message: "Wrong username or password!" };
         }
 
-        // Generate JWT
+        // Generate JWT token with the secret
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRES_IN,
+            expiresIn: process.env.JWT_EXPIRES_IN, // e.g., "1h"
         });
 
+        // Return the token and user data (excluding password)
         const { password: userPassword, ...otherUserData } = user;
         return { success: true, token, user: otherUserData };
+
     } catch (error) {
         console.error("Error in loginUser service:", error);
 
@@ -62,6 +64,7 @@ export const loginUser = async (username, password) => {
             return { success: false, message: "Database error: Required table is missing." };
         }
 
-        return { success: false, message: "An error occurred during login. Please try again later." };
+        // Return the actual error message for debugging
+        return { success: false, message: `An error occurred during login: ${error.message}` };
     }
 };

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.4",
     "axios": "^1.7.7",
     "dompurify": "^3.1.6",
     "moment": "^2.30.1",

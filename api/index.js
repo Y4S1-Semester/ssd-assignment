@@ -3,7 +3,7 @@ import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/posts.js";
 import cookieParser from "cookie-parser";
 import multer from "multer";
-import {authenticate} from "./middleware/authenticate.js";
+import {authenticate} from "./middleware/authenticate-auth.js";
 
 const app = express();
 
@@ -26,6 +26,10 @@ app.post('/api/upload', upload.single('file'), function (req, res) {
   const file = req.file;
   res.status(200).json(file.filename)
 })
+
+app.get("/api/protected", authenticate, (req, res) => {
+  res.json({ message: "You are authenticated!", user: req.user });
+});
 
 app.use("/api/posts", postRoutes);
 app.use("/api/auth", authRoutes);
