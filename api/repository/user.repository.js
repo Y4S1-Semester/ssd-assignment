@@ -22,6 +22,8 @@ export const createUser = (username, email, passwordHash) => {
     });
 };
 
+
+
 export const findUserByUsername = (username) => {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE username = ?";
