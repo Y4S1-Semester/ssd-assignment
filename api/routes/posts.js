@@ -10,6 +10,7 @@ import {authenticate} from "../middleware/authenticate.js";
 
 const router = express.Router();
 
+
 router.get("/", getPosts);
 router.get("/:id", getPost);
 router.post("/", authenticate, addPost);

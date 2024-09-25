@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import Swal from "sweetalert2";
+import { loginUserWithGoogle } from "../service/auth.service";
 
 const Login = () => {
   const [inputs, setInputs] = useState({
@@ -14,6 +15,10 @@ const Login = () => {
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleGoogleSubmit = async (e) => {
+    window.location.href = 'http://localhost:8080/auth/google';
   };
 
   const handleSubmit = async (e) => {
@@ -52,7 +57,8 @@ const Login = () => {
           <button onClick={handleSubmit}>Login</button>
           <span>
           Don't you have an account? <Link to="/register">Register</Link>
-        </span>
+          </span>
+          <div onClick={handleGoogleSubmit}>Log in with Google</div>
         </form>
       </div>
   );
