@@ -9,12 +9,6 @@ import cors from "cors"
 
 const app = express();
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-
 import './auth.passport.js';
 
 app.use(cors());
@@ -47,14 +41,14 @@ function isLoggedIn (req, res, next) {
 app.get (
   '/auth/google',
   passport.authenticate ('google', {
-    scope: ['email'],
+    scope: ['email', 'profile'],
   })
 );
 
 app.get (
   '/auth/google/callback',
   passport.authenticate ('google', {
-    successRedirect: '/auth/protected',
+    successRedirect: 'http://localhost:3000',
     failureRedirect: '/auth/google/failure',
   })
 );
@@ -63,6 +57,7 @@ app.get ('/auth/protected', isLoggedIn, (req, res) => {
   let name = req.user.displayName;
   res.send (`Hello ${name}!`);
 });
+
 app.get ('/auth/google/failure', (req, res) => {
   res.sendStatus ('Something went wrong!');
 });
