@@ -5,7 +5,6 @@ import {OAuth2Client} from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import cookieParser from "cookie-parser";
 import multer from "multer";
-import {authenticateJWT} from "./middleware/authenticate.js";
 import {createUser, findUserByEmailOrUsername} from "./repository/user.repository.js";
 import cors from "cors";
 
@@ -24,8 +23,7 @@ async function verifyGoogleToken(token) {
         idToken: token,
         audience: process.env.GOOGLE_CLIENT_ID,
     });
-    const payload = ticket.getPayload();
-    return payload;
+    return ticket.getPayload();
 }
 
 app.post('/api/auth/google', async (req, res) => {
