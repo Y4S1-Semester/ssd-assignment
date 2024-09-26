@@ -1,14 +1,5 @@
 import * as postService from "../services/post.service.js";
-
-// Input sanitization function
-export const sanitizeInputValues = (values) => {
-  Object.keys(values).forEach(key => {
-    if (typeof values[key] === 'string') {
-      values[key] = values[key].trim();
-    }
-  });
-  return values;
-};
+import sanitizeInputValues from "../utils/sanitize.js";
 
 // Get multiple posts with an optional category filter
 export const getPosts = [
