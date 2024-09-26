@@ -27,7 +27,6 @@ export const getPostById = (postId) => {
 
 // Create a new post
 export const createPost = (post) => {
-    console.log(post)
     const query =
         "INSERT INTO posts(`title`, `desc`, `img`, `cat`, `date`, `uid`) VALUES (?)";
     return new Promise((resolve, reject) => {
