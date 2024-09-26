@@ -5,10 +5,12 @@ import {OAuth2Client} from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import cookieParser from "cookie-parser";
 import multer from "multer";
+import helmet from "helmet";
 import {createUser, findUserByEmailOrUsername} from "./repository/user.repository.js";
 import cors from "cors";
 
 const app = express();
+app.use(helmet.frameguard({ action: 'deny' }));
 app.use(cors({
     origin: 'http://localhost:3000'
 }));
