@@ -11,7 +11,7 @@ import cors from "cors";
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:3000'  // Allow requests from this origin only
+    origin: 'http://localhost:3000'
 }));
 
 app.use(express.json());
@@ -46,15 +46,10 @@ app.post('/api/auth/google', async (req, res) => {
         );
 
         res.json({token: jwtToken});
-        console.log(user)
     } catch (error) {
         console.error('Google Authentication Error:', error);
         res.status(401).json({message: 'Invalid Google token'});
     }
-});
-
-app.get('/api/protected', authenticateJWT, (req, res) => {
-    res.json({message: 'This is a protected route', user: req.user});
 });
 
 

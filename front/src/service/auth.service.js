@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const loginUser = async (inputs) => {
     try {
-        const response = await axios.post("http://localhost:8080/auth/login", inputs);
+        const response = await axios.post("http://localhost:8080/api/auth/login", inputs);
         return response.data;  // Return the user data on successful login
     } catch (error) {
         console.error("Error logging in:", error);
@@ -11,7 +11,7 @@ export const loginUser = async (inputs) => {
 };
 
 export const registerUser = async (userData) => {
-    return await axios.post("http://localhost:8080/auth/register", userData);
+    return await axios.post("http://localhost:8080/api/auth/register", userData);
 };
 
 export const googleLogin = async (googleToken) => {

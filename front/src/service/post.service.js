@@ -3,7 +3,7 @@ import axios from "axios";
 // Fetch posts related to the category
 export const fetchPostsByCategory = async (cat) => {
     try {
-        const response = await axios.get(`http://localhost:8080/posts/?cat=${cat}`);
+        const response = await axios.get(`http://localhost:8080/api/posts/?cat=${cat}`);
         return response.data.data; // Adjust based on response
     } catch (error) {
         console.error("Error fetching posts by category:", error);
@@ -14,7 +14,7 @@ export const fetchPostsByCategory = async (cat) => {
 // Fetch a single post by postId
 export const fetchPostById = async (postId) => {
     try {
-        const response = await axios.get(`http://localhost:8080/posts/${postId}`);
+        const response = await axios.get(`http://localhost:8080/api/posts/${postId}`);
         return response.data;
     } catch (error) {
         console.error("Error fetching post:", error);
@@ -25,7 +25,7 @@ export const fetchPostById = async (postId) => {
 // Delete a post by postId
 export const deletePostById = async (postId) => {
     try {
-        const response = await axios.delete(`http://localhost:8080/posts/${postId}`);
+        const response = await axios.delete(`http://localhost:8080/api/posts/${postId}`);
         return response.data;
     } catch (error) {
         console.error("Error deleting post:", error);
@@ -37,7 +37,7 @@ export const deletePostById = async (postId) => {
 export const createPost = async (postData) => {
     try {
         const user = JSON.parse(localStorage.getItem("user"));
-        const response = await axios.post('http://localhost:8080/posts/', postData, {
+        const response = await axios.post('http://localhost:8080/api/posts/', postData, {
             headers: {
                 Authorization: `Bearer ${user.token}`
             },
@@ -53,7 +53,7 @@ export const createPost = async (postData) => {
 export const updatePost = async (postId, postData) => {
     try {
         const user = JSON.parse(localStorage.getItem("user"));
-        const response = await axios.put(`http://localhost:8080/posts/${postId}`, postData, {
+        const response = await axios.put(`http://localhost:8080/api/posts/${postId}`, postData, {
             headers: {
                 Authorization: `Bearer ${user.token}`
             },
@@ -72,7 +72,7 @@ export const uploadImage = async (file) => {
         formData.append('file', file);
 
         const user = JSON.parse(localStorage.getItem("user"));
-        const response = await axios.post('http://localhost:8080/upload', formData, {
+        const response = await axios.post('http://localhost:8080/api/upload', formData, {
             headers: {
                 Authorization: `Bearer ${user.token}`,
                 'Content-Type': 'multipart/form-data',

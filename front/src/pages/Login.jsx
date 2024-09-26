@@ -127,8 +127,9 @@ const Login = () => {
         <button onClick={handleSubmit}>Login</button>
         <span>
           Don't you have an account? <Link to="/register">Register</Link>
-            <div id="google-signin-button">google</div>
-
+        </span>
+        <span>
+          <div id="google-signin-button"></div>
         </span>
       </form>
     </div>

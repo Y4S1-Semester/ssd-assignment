@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { registerUser } from "../service/auth.service";
+import {AuthContext} from "../context/auth.context";
 
 const Register = () => {
   const [inputs, setInputs] = useState({
@@ -10,6 +11,7 @@ const Register = () => {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const { googleLoginHandler } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -80,6 +82,36 @@ const Register = () => {
     }
   };
 
+  useEffect(() => {
+    if (window.google) {
+      window.google.accounts.id.initialize({
+        client_id: '625034524799-1bm6rsgv0n93iupmcu0k4aeed6qqnt5u.apps.googleusercontent.com',
+        callback: handleCredentialResponse,
+      });
+
+      window.google.accounts.id.renderButton(
+          document.getElementById("google-signin-button"),
+          { theme: "outline", size: "large" }
+      );
+    }
+  }, []);
+
+  const handleCredentialResponse = async (response) => {
+    const googleToken = response.credential;
+    try {
+      await googleLoginHandler(googleToken);
+
+      navigate("/");
+    } catch (error) {
+      console.error("Google login failed:", error);
+      await Swal.fire({
+        icon: 'error',
+        title: 'Login failed',
+        text: error.response?.data?.message || "An unexpected error occurred",
+      });
+    }
+  };
+
   return (
     <div className="auth">
       <h1>Register</h1>
@@ -117,6 +149,9 @@ const Register = () => {
         <button onClick={handleSubmit}>Register</button>
         <span>
           Do you have an account? <Link to="/login">Login</Link>
+        </span>
+        <span>
+          <div id="google-signin-button"></div>
         </span>
       </form>
     </div>
