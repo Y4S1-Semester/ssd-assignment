@@ -1,25 +1,10 @@
 import * as postRepository from "../repository/post.repository.js";
 import Joi from "joi";
 import dotenv from "dotenv";
-import moment from "moment";  // Add moment.js for custom date validation
+import {postSchema} from "../validations/post.validation.js";
+import {categorySchema} from "../validations/category.validation.js";
 
 dotenv.config();
-
-// Validation Schemas
-const postSchema = Joi.object({
-    title: Joi.string().trim().min(3).max(255).required(),
-    desc: Joi.string().min(10).required(),
-    img: Joi.string().pattern(/\.(jpeg|jpg|png|gif)$/i).optional(),
-    cat: Joi.string().required(),
-    date: Joi.string().optional(),
-});
-
-const userSchema = Joi.object({
-    id: Joi.string().uuid().required(),
-});
-
-// Fetch all posts
-const categorySchema = Joi.string().max(100).alphanum().optional();
 
 // Service function to fetch posts with input validation
 export const getPosts = async (category) => {
