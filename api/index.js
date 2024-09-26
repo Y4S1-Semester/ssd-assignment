@@ -5,9 +5,13 @@ import cookieParser from "cookie-parser";
 import multer from "multer";
 import {rateLimiter} from "./middleware/rateLimiter.js";
 import helmet from "helmet";
+import cors from "cors";
 
 const app = express();
-app.use(helmet.frameguard({ action: 'deny' }));  
+app.use(helmet.frameguard({ action: 'deny' }));
+app.use(cors({
+    origin: 'http://localhost:3000'
+}));
 
 app.use(express.json());
 app.use(cookieParser());
@@ -22,7 +26,6 @@ const storage = multer.diskStorage({
   },
 });
 
-
 const upload = multer({ storage });
 
 app.post('/api/upload', upload.single('file'), function (req, res) {
@@ -33,6 +36,6 @@ app.post('/api/upload', upload.single('file'), function (req, res) {
 app.use("/api/posts", postRoutes);
 app.use("/api/auth", authRoutes);
 
-app.listen(8800, () => {
+app.listen(8080, () => {
   console.log("Connected!!!!");
 });

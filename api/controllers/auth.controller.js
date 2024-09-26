@@ -1,4 +1,5 @@
 import * as userService from "../services/user.service.js";
+import {handleGoogleSignIn, verifyGoogleToken} from "../services/user.service.js";
 
 export const register = async (req, res) => {
   try {
@@ -33,5 +34,19 @@ export const login = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({ message: "An unexpected error occurred." });
+  }
+};
+
+export const googleSignIn = async (req, res) => {
+  const { token } = req.body;
+
+  try {
+    const googleUser = await verifyGoogleToken(token);
+    const jwtToken = await handleGoogleSignIn(googleUser);
+
+    res.json({ token: jwtToken });
+  } catch (error) {
+    console.error('Google Authentication Error:', error);
+    res.status(401).json({ message: 'Invalid Google token' });
   }
 };
