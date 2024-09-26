@@ -1,25 +1,20 @@
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+import jwt from 'jsonwebtoken';
 
-dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET;
 
-export const authenticate = (req, res, next) => {
-    const authHeader = req.headers["authorization"];
+export function authenticateJWT(req, res, next) {
+    const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({ message: "Not authenticated" });
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+        jwt.verify(token, JWT_SECRET, (err, user) => {
+            if (err) {
+                return res.sendStatus(403);
+            }
+            req.user = user;
+            next();
+        });
+    } else {
+        res.sendStatus(401);
     }
-
-    const token = authHeader.split(" ")[1];  // Extract the token
-
-    // Verify the JWT token
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) {
-            return res.status(403).json({ message: "Token is not valid" });
-        }
-
-        // Attach the user info to the request object and proceed
-        req.user = user;
-        next();
-    });
-};
+}
