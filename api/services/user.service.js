@@ -2,6 +2,10 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import * as userRepository from "../repository/user.repository.js";
+import {createUser, findUserByEmailOrUsername} from "../repository/user.repository.js";
+import {OAuth2Client} from 'google-auth-library';
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
 
 dotenv.config();
 
@@ -65,3 +69,29 @@ export const loginUser = async (username, password) => {
         return { success: false, message: "An error occurred during login. Please try again later." };
     }
 };
+
+export async function verifyGoogleToken(token) {
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        return ticket.getPayload();
+    } catch (error) {
+        throw new Error('Google token verification failed.');
+    }
+}
+
+export async function handleGoogleSignIn(googleUser) {
+    let user = await findUserByEmailOrUsername(googleUser.email, null);
+
+    if (!user) {
+        user = await createUser(googleUser.name, googleUser.email, googleUser.sub);
+    }
+
+    return jwt.sign(
+        {userId: user._id, email: user.email},
+        process.env.JWT_SECRET,
+        {expiresIn: process.env.JWT_EXPIRES_IN}
+    );
+}
