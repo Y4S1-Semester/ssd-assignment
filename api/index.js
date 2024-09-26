@@ -3,9 +3,10 @@ import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/posts.js";
 import cookieParser from "cookie-parser";
 import multer from "multer";
-import {authenticate} from "./middleware/authenticate.js";
+import helmet from "helmet";
 
 const app = express();
+app.use(helmet.frameguard({ action: 'deny' }));  
 
 app.use(express.json());
 app.use(cookieParser());
