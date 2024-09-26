@@ -3,12 +3,13 @@ import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/posts.js";
 import cookieParser from "cookie-parser";
 import multer from "multer";
-import {authenticate} from "./middleware/authenticate.js";
+import {rateLimiter} from "./middleware/rateLimiter.js";
 
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(rateLimiter);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
