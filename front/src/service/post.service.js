@@ -15,7 +15,7 @@ export const fetchPostsByCategory = async (cat) => {
 export const fetchPostById = async (postId) => {
     try {
         const response = await axios.get(`/posts/${postId}`);
-        return response.data;
+        return response.data.data;
     } catch (error) {
         console.error("Error fetching post:", error);
         throw error;
@@ -26,7 +26,7 @@ export const fetchPostById = async (postId) => {
 export const deletePostById = async (postId) => {
     try {
         const response = await axios.delete(`/posts/${postId}`);
-        return response.data;
+        return response.data.data;
     } catch (error) {
         console.error("Error deleting post:", error);
         throw error;
