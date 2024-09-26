@@ -6,14 +6,14 @@ import {
   getPosts,
   updatePost,
 } from "../controllers/post.controller.js";
-import {authenticate} from "../middleware/authenticate.js";
+import {authenticateJWT} from "../middleware/authenticate.js";
 
 const router = express.Router();
 
 router.get("/", getPosts);
 router.get("/:id", getPost);
-router.post("/", authenticate, addPost);
-router.delete("/:id", authenticate, deletePost);
-router.patch("/:id", authenticate, updatePost);
+router.post("/", authenticateJWT, addPost);
+router.delete("/:id", authenticateJWT, deletePost);
+router.patch("/:id", authenticateJWT, updatePost);
 
 export default router;
